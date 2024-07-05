@@ -1,17 +1,27 @@
 import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useRouteError, isRouteErrorResponse } from "react-router-dom";
 import styles from "./styles.module.css";
 const { notFound } = styles;
 
 export const Error = () => {
+    const error = useRouteError();
+    let errorStatus: number;
+    let errorStatusText: string;
+
+    if(isRouteErrorResponse(error)){
+        errorStatus = error.status;
+        errorStatusText = error.statusText;
+    }else{
+        errorStatus = 404;
+        errorStatusText = "Page not found";
+    }
+    
   return (
     <Container className={notFound}>
-      <h1>404</h1>
-      <p>Page Not Found</p>
+      <h1>{errorStatus}</h1>
+      <p>{errorStatusText}</p>
       <Link to={"/"} replace={true}>
-        Looks link you've reached to non-existent page.
-        <br />
-        How about Going back to safety?
+        How about Going back to safety ?
       </Link>
     </Container>
   );
